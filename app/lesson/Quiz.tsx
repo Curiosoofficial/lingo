@@ -6,6 +6,7 @@ import { useState } from "react";
 import Header from "./Header";
 import QuestionBubble from "./QuestionBubble";
 import Challenge from "./Challenge";
+import Footer from "./Footer";
 
 
 
@@ -81,6 +82,12 @@ const Quiz = ({
           </div>
         </div>
       </div>
+
+      <Footer
+        disabled={!selectedOption}
+        status={status}
+        onCheck={() => {}}
+      />
     </>
   );
 };
