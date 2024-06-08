@@ -7,6 +7,7 @@ import Header from "./Header";
 import QuestionBubble from "./QuestionBubble";
 import Challenge from "./Challenge";
 import Footer from "./Footer";
+import { stat } from "fs";
 
 
 
@@ -36,6 +37,7 @@ const Quiz = ({
     return uncompletedIndex === -1 ? 0 : uncompletedIndex;
   });
 
+
   const [selectedOption, setSelectedOption] = useState<number>();
   const [status, setStatus] = useState<"correct" | "wrong" | "none">("none");
 
@@ -46,6 +48,45 @@ const Quiz = ({
     if(status !== "none") return;
 
     setSelectedOption(id);
+  }
+
+  const onNext = () => {
+    setActiveIndex((current) => current + 1);
+  }
+
+  const onContinue = () => {
+    if(!selectedOption) return;
+
+    if(status === "wrong") {
+      setStatus("none");
+      setSelectedOption(undefined);
+      return;
+    }
+
+    if(status === "correct") {
+      onNext();
+      setStatus("none");
+      setSelectedOption(undefined);
+      return;
+    }
+
+    const correctOption = options.find((option) => option.correct);
+
+    if(!correctOption) {
+      setStatus("wrong");
+      setHearts((current) => current - 1);
+      return;
+    }
+
+    if(correctOption && correctOption.id === selectedOption) {
+      setStatus("correct");
+      setPercentage((current) => current + 10);
+      return;
+    } else {
+      setStatus("wrong");
+      setHearts((current) => current - 1);
+      return;
+    }
   }
 
   const title = challenge.type === "ASSIST" 
@@ -86,7 +127,7 @@ const Quiz = ({
       <Footer
         disabled={!selectedOption}
         status={status}
-        onCheck={() => {}}
+        onCheck={onContinue}
       />
     </>
   );
