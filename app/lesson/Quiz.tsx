@@ -59,15 +59,15 @@ const Quiz = ({
   }
 
   const onContinue = () => {
-    if(!selectedOption) return;
+    if (!selectedOption) return;
 
-    if(status === "wrong") {
+    if (status === "wrong") {
       setStatus("none");
       setSelectedOption(undefined);
       return;
     }
 
-    if(status === "correct") {
+    if (status === "correct") {
       onNext();
       setStatus("none");
       setSelectedOption(undefined);
@@ -76,7 +76,7 @@ const Quiz = ({
 
     const correctOption = options.find((option) => option.correct);
 
-    if(!correctOption) {
+    if (!correctOption) {
       return;
     }
 
@@ -88,6 +88,7 @@ const Quiz = ({
               return;
             }
 
+            
             setStatus("correct");
             setPercentage((prev) => prev + 100 / challenges.length);
 
@@ -98,12 +99,10 @@ const Quiz = ({
           })
           .catch(() => toast.error("Something went wrong. Please try again."))
       });
-
-      
     } else {
-      console.log("wrong");
+      //munem
     }
-  }
+  };
 
   const title = challenge.type === "ASSIST" 
   ? "Select the correct Meaning" 
@@ -132,7 +131,7 @@ const Quiz = ({
                 onSelect={onSelect}
                 status={status}
                 selectedOption={selectedOption}
-                disabled={false}
+                disabled={pending}
                 type={challenge.type}
               />
             </div>
@@ -141,7 +140,7 @@ const Quiz = ({
       </div>
 
       <Footer
-        disabled={!selectedOption}
+        disabled={pending || !selectedOption}
         status={status}
         onCheck={onContinue}
       />
