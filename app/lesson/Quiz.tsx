@@ -10,6 +10,7 @@ import Footer from "./Footer";
 
 import { upsertChallengeProgress } from "@/actions/challengeProgress.action";
 import { toast } from "sonner";
+import { reduceHearts } from "@/actions/userProgress.action";
 
 
 
@@ -100,7 +101,20 @@ const Quiz = ({
           .catch(() => toast.error("Something went wrong. Please try again."))
       });
     } else {
-      //munem
+      startTransition(() => {
+        reduceHearts(challenge.id)
+          .then((response) => {
+            if (response?.error === "hearts") {
+              return;
+            }
+
+            setStatus("wrong");
+            if (!response?.error) {
+              setHearts((prev) => Math.max(prev - 1, 0));
+            }
+          })
+          .catch(() => toast.error("Something went wrong. Please try again."))
+      })
     }
   };
 
