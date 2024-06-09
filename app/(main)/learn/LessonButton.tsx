@@ -47,7 +47,7 @@ const LessonButton = ({
 
   const Icon = isCompleted ? Check : isLast ? Crown : Star;
 
-  const href = isCompleted ? `/learn/${id}` : "lesson";
+  const href = isCompleted ? `/lesson/${id}` : "lesson";
 
   return (
     <Link
