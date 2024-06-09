@@ -111,7 +111,7 @@ export const reduceHearts = async (challengeId: number) => {
 
 }
 
-const POINTS_TO_REFILL = 10;
+const POINTS_TO_REFILL = 50;
 
 export const refillHearts = async () => {
   const currentUserProgress = await getUserProgress();
