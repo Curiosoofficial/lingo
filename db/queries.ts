@@ -2,7 +2,14 @@ import { cache } from "react";
 import db from "./drizzle";
 import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
-import { challengeProgress, courses, lessons, units, userProgress, userSubscription } from "./schema";
+import {
+  challengeProgress,
+  courses,
+  lessons,
+  units,
+  userProgress,
+  userSubscription,
+} from "./schema";
 
 export const getCourses = cache(async () => {
   const data = await db.query.courses.findMany();
@@ -46,8 +53,8 @@ export const getCourseById = cache(async (courseId: number) => {
 });
 
 export const getUnits = cache(async () => {
-    const { userId } = auth();
-    const userProgress = await getUserProgress();
+  const { userId } = auth();
+  const userProgress = await getUserProgress();
 
   if (!userId || !userProgress?.activeCourseId) {
     return [];
@@ -75,25 +82,23 @@ export const getUnits = cache(async () => {
 
   const normalizedData = data.map((unit) => {
     const lessonsWithCompletedStatus = unit.lessons.map((lesson) => {
-      if (
-        lesson.challenges.length === 0
-      ) {
-        return {...lesson, completed: false};
+      if (lesson.challenges.length === 0) {
+        return { ...lesson, completed: false };
       }
-      
 
       const allCompletedChallenges = lesson.challenges.every((challenge) => {
-          return challenge.challengeProgress &&
+        return (
+          challenge.challengeProgress &&
           challenge.challengeProgress.length > 0 &&
-          challenge.challengeProgress.every((progress) => progress.completed);
+          challenge.challengeProgress.every((progress) => progress.completed)
+        );
       });
-      return {...lesson, completed: allCompletedChallenges};
-    })
-    return {...unit, lessons: lessonsWithCompletedStatus};
+      return { ...lesson, completed: allCompletedChallenges };
+    });
+    return { ...unit, lessons: lessonsWithCompletedStatus };
   });
-  
-    return normalizedData;
 
+  return normalizedData;
 });
 
 export const getCourseProgress = cache(async () => {
@@ -128,19 +133,22 @@ export const getCourseProgress = cache(async () => {
     .flatMap((unit) => unit.lessons)
     .find((lesson) => {
       return lesson.challenges.some((challenge) => {
-        return !challenge.challengeProgress ||
+        return (
+          !challenge.challengeProgress ||
           challenge.challengeProgress.length === 0 ||
           challenge.challengeProgress.length === 0 ||
-          challenge.challengeProgress.some((progress) => progress.completed === false);
+          challenge.challengeProgress.some(
+            (progress) => progress.completed === false
+          )
+        );
       });
     });
 
-    return {
-      activeLesson: firstUncompletedLesson,
-      activeLessonId: firstUncompletedLesson?.id,
-    }
-
-})
+  return {
+    activeLesson: firstUncompletedLesson,
+    activeLessonId: firstUncompletedLesson?.id,
+  };
+});
 
 export const getLesson = cache(async (id?: number) => {
   const { userId } = auth();
@@ -177,16 +185,16 @@ export const getLesson = cache(async (id?: number) => {
   }
 
   const normalizedChallenges = data.challenges.map((challenge) => {
-    const completed = challenge.challengeProgress 
-    && challenge.challengeProgress.length > 0
-    && challenge.challengeProgress.every((progress) => progress.completed);
+    const completed =
+      challenge.challengeProgress &&
+      challenge.challengeProgress.length > 0 &&
+      challenge.challengeProgress.every((progress) => progress.completed);
 
     return { ...challenge, completed };
   });
 
   return { ...data, challenges: normalizedChallenges };
-
-})
+});
 
 export const getLessonPercentage = cache(async () => {
   const courseProgress = await getCourseProgress();
@@ -201,14 +209,16 @@ export const getLessonPercentage = cache(async () => {
     return 0;
   }
 
-  const completedChallenges = lesson.challenges
-    .filter((challenge) => challenge.completed);
+  const completedChallenges = lesson.challenges.filter(
+    (challenge) => challenge.completed
+  );
 
-  const percentage = Math.round(completedChallenges.length / lesson.challenges.length * 100);
+  const percentage = Math.round(
+    (completedChallenges.length / lesson.challenges.length) * 100
+  );
 
   return percentage;
-
-})
+});
 
 const DAY_IN_MS = 86_400_000;
 
@@ -227,9 +237,30 @@ export const getUserSubscription = cache(async () => {
     return null;
   }
 
-  const isActive = 
-    data.stripePriceId && 
+  const isActive =
+    data.stripePriceId &&
     data.stripeCurrentPeriodEnd?.getTime()! + DAY_IN_MS > Date.now();
 
   return { ...data, isActive: !!isActive };
-})
+});
+
+export const getTopTenUsers = cache(async () => {
+  const { userId } = auth();
+  
+  if (!userId) {
+    return [];
+  }
+
+  const data = await db.query.userProgress.findMany({
+    orderBy: (userProgress, { desc }) => [desc(userProgress.points)],
+    limit: 10,
+    columns: {
+      userId: true,
+      userName: true,
+      userImageSrc: true,
+      points: true,
+    },
+  });
+
+  return data;
+});
