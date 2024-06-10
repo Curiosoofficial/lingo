@@ -111,6 +111,7 @@ const Quiz = ({
 
     if (correctOption.id === selectedOption) {
       startTransition(() => {
+        //@ts-ignore
         upsertChallengeProgress(challenge.id)
           .then((response) => {
             if (response?.error === "hearts") {
@@ -131,6 +132,7 @@ const Quiz = ({
       });
     } else {
       startTransition(() => {
+        //@ts-ignore
         reduceHearts(challenge.id)
           .then((response) => {
             if (response?.error === "hearts") {
