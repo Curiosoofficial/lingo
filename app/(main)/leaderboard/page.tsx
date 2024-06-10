@@ -1,4 +1,6 @@
 import FeedWrapper from "@/components/FeedWrapper";
+import Promo from "@/components/Promo";
+import Quests from "@/components/Quests";
 import StickyWrapper from "@/components/StickyWrapper";
 import UserProgress from "@/components/UserProgress";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
@@ -30,6 +32,8 @@ const page = async () => {
             points={userProgress.points}
             hasActiveSubscription={isPro}
         />
+        {!isPro && (<Promo />)}
+        <Quests points={userProgress.points}/>
       </StickyWrapper>
 
       <FeedWrapper>
