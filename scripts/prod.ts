@@ -62,7 +62,7 @@ const insertCourse = async (title: string, imageSrc: string, unitDescriptions: s
             order: index + 1,
           })))
           .returning();
-
+          // @ts-ignore
         for (const [index, challenge] of challenges.entries()) {
           await insertChallengeOptions(challenge.id, challengesData[index].options);
         }

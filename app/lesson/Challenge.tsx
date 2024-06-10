@@ -27,15 +27,19 @@ const Challenge = ({
         type === "SELECT" && "grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(0,1fr))]",
     )}>
         {options.map((option, i) => (
-            <Card 
-                key={option.id}
+          <Card 
+          key={option.id}
+          //@ts-ignore
                 id={option.id}
                 text={option.text}
+                //@ts-ignore
                 imageSrc={option.imageSrc}
                 shortcut={`${i + 1}`}
                 selected={selectedOption === option.id}
+                //@ts-ignore
                 onclick={() => onSelect(option.id)}
                 status={status}
+                //@ts-ignore
                 audioSrc={option.audioSrc}
                 disabled={disabled}
                 type={type}

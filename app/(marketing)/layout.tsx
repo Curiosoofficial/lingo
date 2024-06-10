@@ -4,7 +4,7 @@ import Header from "./Header";
 
 
 type Props = {
-    chidlren: React.ReactNode;
+    children: React.ReactNode;
 }
 
 const MarketingLayout = ({ children }: Props) => {
