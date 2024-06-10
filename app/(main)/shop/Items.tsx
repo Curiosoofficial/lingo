@@ -3,6 +3,7 @@
 import { refillHearts } from "@/actions/userProgress.action";
 import { createStripeUrl } from "@/actions/userSubscription.action";
 import { Button } from "@/components/ui/button";
+import { POINTS_TO_REFILL } from "@/constants";
 import Image from "next/image";
 import { useTransition } from "react";
 import { toast } from "sonner";
@@ -12,7 +13,7 @@ type Props = {
   points: number;
   hasActiveSubscription: boolean;
 };
-const POINTS_TO_REFILL = 10;
+
 
 const Items = ({ hearts, points, hasActiveSubscription }: Props) => {
   const [pending, startTransition] = useTransition();
@@ -74,8 +75,8 @@ const Items = ({ hearts, points, hasActiveSubscription }: Props) => {
             Unlimited Hearts
           </p>
         </div>
-        <Button disabled={pending || hasActiveSubscription} onClick={onUpgrade}>
-          {hasActiveSubscription ? "active" : "upgrade"}
+        <Button disabled={pending} onClick={onUpgrade}>
+          {hasActiveSubscription ? "settings" : "upgrade"}
         </Button>
       </div>
     </ul>
