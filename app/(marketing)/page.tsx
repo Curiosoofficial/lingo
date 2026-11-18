@@ -4,8 +4,7 @@ import {
   ClerkLoading,
   SignInButton,
   SignUpButton,
-  SignedIn,
-  SignedOut,
+  Show,
 } from "@clerk/nextjs";
 import { Loader } from "lucide-react";
 import Image from "next/image";
@@ -28,7 +27,7 @@ export default function Home() {
           </ClerkLoading>
 
           <ClerkLoaded>
-            <SignedOut>
+            <Show when="signed-out">
               <SignUpButton mode="redirect" forceRedirectUrl="/learn">
                 <Button size="lg" variant="secondary" className="w-full">
                   Get Started
@@ -40,15 +39,15 @@ export default function Home() {
                   I already have an account
                 </Button>
               </SignInButton>
-            </SignedOut>
+            </Show>
 
-            <SignedIn>
+            <Show when="signed-in">
               <Button size="lg" variant="secondary" className="w-full" asChild>
                 <Link href="/learn"> 
                 Continue Learning
                 </Link>
               </Button>
-            </SignedIn>
+            </Show>
           </ClerkLoaded>
         </div>
       </div>

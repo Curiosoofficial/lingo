@@ -2,7 +2,6 @@
 
 
 
-import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -18,18 +17,11 @@ import { useHeartsModal } from "@/store/use-hearts-modal";
 
 const HeartsModal = () => {
   const router = useRouter();
-  const [isClient, setIsClient] = useState(false);
   const { isOpen, close } = useHeartsModal();
-
-  useEffect(() => setIsClient(true), []);
 
   const onClick = () => {
     close();
-    router.push("/store");
-  }
-
-  if (!isClient) {
-    return null;
+    router.push("/shop");
   }
 
   return (

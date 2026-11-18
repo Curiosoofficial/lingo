@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ClerkLoaded, ClerkLoading, SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { ClerkLoaded, ClerkLoading, Show, SignInButton, UserButton } from "@clerk/nextjs";
 import { Loader } from "lucide-react";
 import Image from "next/image";
 import React from 'react';
@@ -23,14 +23,14 @@ const Header = () => {
         </ClerkLoading>
 
         <ClerkLoaded>
-          <SignedIn>
+          <Show when="signed-in">
             <UserButton />
-          </SignedIn>
-          <SignedOut>
+          </Show>
+          <Show when="signed-out">
             <SignInButton mode="redirect" forceRedirectUrl="/learn">
               <Button size="lg" variant="ghost">Sign in</Button>
             </SignInButton>
-          </SignedOut>
+          </Show>
         </ClerkLoaded>
       </div>
     </header>

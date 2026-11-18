@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -14,14 +13,7 @@ import { Button } from "../ui/button";
 import { usePracticeModal } from "@/store/use-practice-modal";
 
 const PracticeModal = () => {
-  const [isClient, setIsClient] = useState(false);
   const { isOpen, close } = usePracticeModal();
-
-  useEffect(() => setIsClient(true), []);
-
-  if (!isClient) {
-    return null;
-  }
 
   return (
     <Dialog open={isOpen} onOpenChange={close}>
