@@ -8,7 +8,7 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 const returnUrl = absoluteUrl("/shop");
 
 export const createStripeUrl = async () => {
-  const { userId } = auth();
+  const { userId } = await auth();
   const user = await currentUser();
 
   if (!user || !userId) {

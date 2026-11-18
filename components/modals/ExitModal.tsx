@@ -2,7 +2,6 @@
 
 import { useExitModal } from "@/store/use-exit-modal";
 
-import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -17,14 +16,7 @@ import { useRouter } from "next/navigation";
 
 const ExitModal = () => {
   const router = useRouter();
-  const [isClient, setIsClient] = useState(false);
   const { isOpen, close } = useExitModal();
-
-  useEffect(() => setIsClient(true), []);
-
-  if (!isClient) {
-    return null;
-  }
 
   return (
     <Dialog open={isOpen} onOpenChange={close}>

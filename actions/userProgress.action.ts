@@ -107,10 +107,11 @@ export const reduceHearts = async (challengeId: number) => {
   }).where(eq(userProgress.userId, userId));
 
   revalidatePath("/shop");
+  revalidatePath("/learn");
   revalidatePath("/lesson");
   revalidatePath("/quests");
   revalidatePath("/leaderboard");
-  revalidatePath(`/learn/${lessonId}`);
+  revalidatePath(`/lesson/${lessonId}`);
 
 }
 

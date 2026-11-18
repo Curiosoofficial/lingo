@@ -1,19 +1,14 @@
 import { isAdmin } from "@/lib/admin";
-import dynamic from "next/dynamic"
 import { redirect } from "next/navigation";
 
-const App = dynamic(() => import("./App"), { ssr: false });
+import AdminApp from "./AdminApp";
 
-
-const page = () => {
-  
-  if (!isAdmin()) {
+const page = async () => {
+  if (!(await isAdmin())) {
     redirect("/");
   }
 
-  return (
-    <App/>
-  )
-}
+  return <AdminApp />;
+};
 
-export default page
+export default page;
