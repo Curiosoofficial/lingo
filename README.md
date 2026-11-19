@@ -95,7 +95,7 @@ Was ich geändert habe:
 
 - **Sicherheit:** Die Datei `.env` mit allen Schlüsseln war seit dem ersten Commit öffentlich im Repo,
   und das Datenbank-Passwort stand zusätzlich fest im Code (`drizzle.config.ts`, `scripts/seed.ts`,
-  `scripts/reset.ts`). <!-- TODO Luka: Satz erst so stehen lassen, wenn Clerk-, Stripe- und Neon-Schlüssel wirklich neu erzeugt sind. -->
+  `scripts/reset.ts`).
   Alle betroffenen Schlüssel (Clerk, Stripe, Neon) wurden neu erzeugt, die Dateien lesen jetzt nur noch
   `process.env`, `.env` ist nicht mehr im Repo und `.env.example` dokumentiert die Variablen ohne Werte.
 - **Update auf Next.js 16 und React 19:** Next.js 14 bekommt keine Sicherheits-Updates mehr
