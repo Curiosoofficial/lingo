@@ -5,7 +5,6 @@ import { getUserProgress, getUserSubscription } from "@/db/queries";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import Items from "./Items";
-import Promo from "@/components/Promo";
 import Quests from "@/components/Quests";
 
 const page = async () => {
@@ -29,7 +28,6 @@ const page = async () => {
             points={userProgress.points}
             hasActiveSubscription={isPro}
         />
-        {!isPro && (<Promo />)}
         <Quests points={userProgress.points}/>
       </StickyWrapper>
 

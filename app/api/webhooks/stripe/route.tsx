@@ -31,15 +31,20 @@ export async function POST(req: Request) {
             return new NextResponse("No user ID found in metadata", { status: 400 });
         }
 
-        await db.insert(userSubscription).values({
-            userId: session.metadata.userId,
+        const values = {
             stripeSubscriptionId: subscription.id,
             stripeCustomerId: subscription.customer as string,
             stripePriceId: subscription.items.data[0].price.id,
             stripeCurrentPeriodEnd: new Date(
                 subscription.current_period_end * 1000
             ),
-        })
+        };
+
+        // Pro User gibt es nur eine Zeile (user_id ist unique). Hatte der User
+        // schon einmal ein (inzwischen abgelaufenes) Abo, wird diese Zeile ersetzt.
+        await db.insert(userSubscription)
+            .values({ userId: session.metadata.userId, ...values })
+            .onConflictDoUpdate({ target: userSubscription.userId, set: values });
     }
 
     if( event.type === "invoice.payment_succeeded") {
