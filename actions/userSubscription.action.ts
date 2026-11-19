@@ -17,7 +17,10 @@ export const createStripeUrl = async () => {
 
   const userSubscription = await getUserSubscription();
 
-  if (userSubscription && userSubscription.stripeCustomerId) {
+  // Kundenportal nur bei aktivem Abo (dort kann man es verwalten oder kündigen).
+  // Ein abgelaufenes Abo hat zwar noch eine Kunden-ID, im Portal kann man aber
+  // kein neues Abo abschliessen. Darum geht es dann wieder zum Checkout.
+  if (userSubscription?.isActive && userSubscription.stripeCustomerId) {
     const stripeSession = await stripe.billingPortal.sessions.create({
         customer: userSubscription.stripeCustomerId,
         return_url: returnUrl,
@@ -29,7 +32,10 @@ export const createStripeUrl = async () => {
   const stripeSession = await stripe.checkout.sessions.create({
     mode: "subscription",
     payment_method_types: ["card"],
-    customer_email: user.emailAddresses[0].emailAddress,
+    // Bestehenden Stripe-Kunden wiederverwenden, sonst legt Stripe einen neuen an.
+    ...(userSubscription?.stripeCustomerId
+      ? { customer: userSubscription.stripeCustomerId }
+      : { customer_email: user.emailAddresses[0].emailAddress }),
     line_items: [
       {
         quantity: 1,
