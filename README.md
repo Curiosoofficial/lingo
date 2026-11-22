@@ -1,7 +1,7 @@
 # Lingo – Sprachen lernen im Duolingo-Stil
 
-> **Tutorial-Projekt, nachgebaut nach Code With Antonio.**
-> Grundidee, Aufbau und Design stammen aus seinem Video-Tutorial. Ich habe die App 2024 Schritt für Schritt
+> **Tutorial-Projekt, nach einem Video-Tutorial nachgebaut.**
+> Grundidee, Aufbau und Design stammen aus dem Tutorial. Ich habe die App 2024 Schritt für Schritt
 > nachprogrammiert, um Next.js (App Router), Server Actions, Drizzle ORM, Clerk und Stripe zu lernen.
 > 2026 habe ich sie repariert und auf aktuelle Versionen gehoben (siehe unten).
 
